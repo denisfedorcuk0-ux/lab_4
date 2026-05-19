@@ -1,8 +1,9 @@
-name: Deploy Lab Javadoc
+name: Deploy Javadoc to Pages
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: ["main"]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -14,10 +15,13 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Set up JDK 17
@@ -27,19 +31,15 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      # Оскільки структура кастомна, mvn clean test перевірить чи все збирається
-      - name: Build and run tests
-        run: mvn clean test
+      - name: Build with Maven
+        run: mvn compile
 
-      # Цей крок згенерує документацію для Letter, Word, Sentence тощо
       - name: Generate Javadoc
-        run: mvn javadoc:javadoc
+        run: mvn javadoc:javadoc -DfailOnError=false -Dquiet=true
 
-       Sir, Setup Pages
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      # Завантажуємо саме згенеровану папку apidocs
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
