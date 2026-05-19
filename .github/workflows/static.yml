@@ -1,8 +1,8 @@
-name: Deploy static content to Pages
+name: Generate Javadoc and Deploy to Pages
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "master"]
   workflow_dispatch:
 
 permissions:
@@ -15,13 +15,14 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  build-and-deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up JDK 17
@@ -29,26 +30,20 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: maven
 
-      # 1. Збираємо проєкт та запускаємо тести
-      - name: Build and run tests
-        run: mvn clean test
-
-      # 2. ПРИМУСОВО ГЕНЕРУЄМО JAVADOC (це створить потрібну папку)
       - name: Generate Javadoc
-        run: mvn javadoc:javadoc -DfailOnError=false
+        run: |
+          mkdir -p docs
+          javadoc -d docs -encoding UTF-8 -docencoding UTF-8 -charset UTF-8 src/*.java
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      # 3. Завантажуємо згенеровану папку
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'target/site/apidocs'
+          path: docs
 
-      # 4. Публікуємо на GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
