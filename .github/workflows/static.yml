@@ -34,7 +34,7 @@ jobs:
       - name: Generate Javadoc
         run: |
           mkdir -p docs
-          javadoc -d docs -encoding UTF-8 -docencoding UTF-8 -charset UTF-8 src/*.java
+          javadoc -d docs -encoding UTF-8 -docencoding UTF-8 -charset UTF-8 -sourcepath src -subpackages .
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
