@@ -8,7 +8,7 @@ import java.util.List;
  * Represents a sentence consisting of an ordered sequence of elements (Words and Punctuation marks).
  */
 public class Sentence {
-    // Array storing Word and Punctuation objects dynamically determined during initialization
+
     private final Object[] elements;
 
     /**
@@ -20,24 +20,24 @@ public class Sentence {
         List<Object> list = new ArrayList<>();
         StringBuilder wordBuilder = new StringBuilder();
 
-        // Parse character by character to distinguish words from punctuation/spaces
+
         for (int i = 0; i < sentenceStr.length(); i++) {
             char ch = sentenceStr.charAt(i);
 
-            // Treat letters, digits, and apostrophes as parts of a word
+
             if (Character.isLetterOrDigit(ch) || ch == '\'') {
                 wordBuilder.append(ch);
             } else {
-                // If a word was being accumulated, finalize and add it before processing punctuation
+
                 if (wordBuilder.length() > 0) {
                     list.add(new Word(wordBuilder.toString()));
                     wordBuilder.setLength(0);
                 }
-                // Add the current non-alphanumeric character as a Punctuation object
+
                 list.add(new Punctuation(ch));
             }
         }
-        // Add any remaining trailing word after the loop ends
+
         if (wordBuilder.length() > 0) {
             list.add(new Word(wordBuilder.toString()));
         }
