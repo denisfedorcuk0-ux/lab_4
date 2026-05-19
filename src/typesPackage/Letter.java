@@ -1,3 +1,5 @@
+package typesPackage;
+
 public class Letter {
     private final char value;
 
