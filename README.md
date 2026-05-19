@@ -79,7 +79,7 @@ rating (int) – рейтинг (популярність/якість).
 Створено екземпляр target із шуканими параметрами. Пошук здійснюється перебором (лінійний пошук) за допомогою перевизначеного методу equals(), який глибоко порівнює всі поля об'єктів (включно зі структурою Text).
 
 ## Структура проєкту
-
+``` text
 src/
 ├─ Main/
 │  └─ Main.java               
@@ -89,5 +89,11 @@ src/
    ├─ Sentence.java          
    ├─ SportsEquipment.java    
    ├─ Text.java               
-   └─ Word.java              
+   └─ Word.java         
+   ```
 ## Відео
+
+
+https://github.com/user-attachments/assets/6466fd20-2418-4021-9c0a-10cbd2239692
+
+
